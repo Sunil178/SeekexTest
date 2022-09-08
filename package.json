@@ -1,0 +1,26 @@
+{
+  "name": "seekextest",
+  "version": "1.0.0",
+  "description": "Seekex Test Program",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Sunil178/SeekexTest.git"
+  },
+  "author": "Sunil Thakur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sunil178/SeekexTest/issues"
+  },
+  "homepage": "https://github.com/Sunil178/SeekexTest#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1",
+    "http": "^0.0.1-security",
+    "path": "^0.12.7",
+    "redis": "^4.3.0"
+  }
+}
