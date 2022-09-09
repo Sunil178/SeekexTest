@@ -102,6 +102,7 @@ total_ball_volumes = balls.reduce((pv, cv) => pv + cv, 0);
 console.log("total_ball_volumes", total_ball_volumes);
 
 minimum_loss_combinations = {'loss': Infinity, 'combination': null}
+var min_boxused_count = Infinity
 i = 1
 while (i <= Object.values(buckets).length) {
     combinations = iterr_combinations(Object.values(buckets), i)
@@ -110,7 +111,10 @@ while (i <= Object.values(buckets).length) {
         if (sum_combination >= total_ball_volumes) {
 			let loss = getLossAndBuckets(combinations[x])
             console.log(combinations[x], loss)
-            if (loss < minimum_loss_combinations['loss']) {
+            if (loss <= minimum_loss_combinations['loss']) {
+                if (loss == minimum_loss_combinations['loss'] && min_boxused_count < combinations[x].length)
+                    continue
+                min_boxused_count = combinations[x].length
                 minimum_loss_combinations['loss'] = loss;
                 minimum_loss_combinations['combination'] = combinations[x];
 			}

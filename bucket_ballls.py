@@ -77,8 +77,6 @@ def getLossAndBuckets(p_buckets):
 # 	"E": 7
 # }
 
-buckets = {"A": 5, "B": 10, "C": 3}
-
 """
 balls = {
 	"PINK": {'value': 2.5, 'quantity': 0},
@@ -95,6 +93,7 @@ total_ball_volumes += balls['GREEN']['quantity'] * 3;
 total_ball_volumes += balls['RED']['quantity'] * 1;
 """
 
+buckets = {"A": 5, "B": 10, "C": 3}
 # balls = [2, 2, 3, 5]
 balls = [2, 3, 5, 2]
 total_ball_volumes = sum(balls)
@@ -102,6 +101,7 @@ total_ball_volumes = sum(balls)
 print("total_ball_volumes", total_ball_volumes);
 
 minimum_loss_combinations = {'loss': inf, 'combination': None}
+min_boxused_count = inf
 i = 1
 while i <= len(buckets):
     combinations = list(iterr_combinations(buckets.values(), i))
@@ -109,7 +109,10 @@ while i <= len(buckets):
         if sum(combination) >= total_ball_volumes:
             loss = getLossAndBuckets(combination)
             print(combination, loss)
-            if loss < minimum_loss_combinations['loss']:
+            if loss <= minimum_loss_combinations['loss']:
+                if loss == minimum_loss_combinations['loss'] and min_boxused_count < len(combination):
+                    continue
+                min_boxused_count = len(combination)
                 minimum_loss_combinations['loss'] = loss
                 minimum_loss_combinations['combination'] = combination
     i += 1
