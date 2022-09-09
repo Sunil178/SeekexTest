@@ -110,7 +110,6 @@ while (i <= Object.values(buckets).length) {
 		sum_combination = combinations[x].reduce((pv, cv) => pv + cv, 0);
         if (sum_combination >= total_ball_volumes) {
 			let loss = getLossAndBuckets(combinations[x])
-            console.log(combinations[x], loss)
             if (loss <= minimum_loss_combinations['loss']) {
                 if (loss == minimum_loss_combinations['loss'] && min_boxused_count < combinations[x].length)
                     continue

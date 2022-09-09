@@ -108,7 +108,6 @@ while i <= len(buckets):
     for combination in combinations:
         if sum(combination) >= total_ball_volumes:
             loss = getLossAndBuckets(combination)
-            print(combination, loss)
             if loss <= minimum_loss_combinations['loss']:
                 if loss == minimum_loss_combinations['loss'] and min_boxused_count < len(combination):
                     continue
