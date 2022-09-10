@@ -9,8 +9,11 @@ var server = require('http').Server(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'assets')));
 
 app.get('/', bucket_controller.index);
+
+app.post('/data', bucket_controller.bucketData);   
 
 server.listen(3000)

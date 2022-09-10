@@ -2,12 +2,152 @@
 <html>
 <head>
 	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<title>Seekex Test</title>
+	
+	
+	<style>
+		td input{
+			margin-bottom: 10px;
+			width: 80px;
+		}
+
+		.btn{
+			padding: 4px 10px 4px 10px;
+			font-size: 0.9rem;
+			color:black;
+		}
+		
+		.submit_btn{
+			padding: 10px 40px 10px 40px;
+			margin-left: 40%;
+			border-radius: 50px;
+			font-size: 1.5rem;
+		}
+	</style>
+
 </head>
 <body>
 
-	<h1>Hello World!</h1>
+	<form method="POST" action="#">
+		<!-- Enter Book to add -->
 
+		
+
+		<table class="table table-bordered" width="100px">
+			<thead class="table-dark">
+			  <th>Bucket</th>
+			  <th>Balls</th>
+			  <th>Ball to Place</th>
+			</thead>
+			<tbody>
+				<td>
+					<div class="buckets">A : <input type="number" name="A"/> cubic inches </div>
+					<div class="buckets">B : <input type="number" name="B"/> cubic inches </div>
+					<div class="buckets">C : <input type="number" name="C"/> cubic inches </div>
+					<div class="buckets">D : <input type="number" name="D"/> cubic inches </div>
+					<div class="buckets">E : <input type="number" name="E"/> cubic inches </div>
+
+
+				</td>
+				<td>
+					Pink : <input type="number" name="pink"/> cubic inches <br/>
+					Red : <input type="number" name="red"/> cubic inches <br/>
+					Blue : <input type="number" name="blue"/> cubic inches <br/>
+					Orange : <input type="number" name="orange"/> cubic inches <br/>
+					Green : <input type="number" name="green"/> cubic inches <br/>
+				</td>
+
+				<td>
+					Pink : <input type="number" name="ball-pink"/> 
+					<button class="btn btn-success addBall" color="pink" type="button">Add Ball</button><br/>
+					Red : <input type="number" name="ball-red"/> 
+					<button class="btn btn-success addBall" color="red" type="button">Add Ball</button> <br/>
+					Blue : <input type="number" name="ball-blue"/> 
+					<button class="btn btn-success addBall" color="blue" type="button">Add Ball</button> <br/>
+					Orange : <input type="number" name="ball-orange"/> 
+					<button class="btn btn-success addBall"  color="orange" type="button">Add Ball</button> <br/>
+					Green : <input type="number" name="ball-green"/>
+					<button class="btn btn-success addBall" color="green" type="button">Add Ball</button> <br/>
+				</td>
+			  
+			</tbody>
+		  </table>
+
+		  <button input type="submit" class="btn btn-primary submit_btn">Submit</button>
+	
+	</form>
+
+<script>
+	var balls = {}, buckets = {};
+	document.querySelector('form').addEventListener('submit', (e) => {
+		e.preventDefault();
+  		const formData = new FormData(e.target);
+		console.log(formData.entries());
+		for (var [key, value] of formData.entries()) {
+			if (key.length > 1)
+				balls[key] = parseFloat(value);
+			else if (key.length == 1 && value.length > 0)
+				buckets[key] = parseFloat(value);
+		}
+
+});
+
+var quantities = [];
+
+$('.addBall').on('click', function () {
+	if (balls) {
+		var colorName = this.getAttribute("color");
+		$(this).removeClass('"btn btn-success');
+		$(this).addClass('"btn btn-danger');
+		$(this).text('Ball added');
+
+		var colorValue = $(`input[name="ball-${colorName}"]`).val();
+		console.log("value of ball ", colorValue, colorName);
+
+		var numberOfBall = colorValue;
+
+		console.log(balls);
+		for(let i = 0; i < numberOfBall; i++){
+			quantities.push(balls[colorName]);
+		}
+
+		$.ajax({
+         url: '/data',
+         type: 'POST',
+         cache: false,
+		 dataType:"json",
+    	contentType: "application/json",
+
+         data: JSON.stringify({"buckets" : buckets, "balls" : quantities}),
+         success: function(data){
+			console.log(data.combination);
+			$('.buckets input').css('background-color', 'transparent');
+			data.combination.forEach((value) => {
+				$('.buckets input').map(function (index, element) {
+					if (element.value == value)
+						element.style.backgroundColor = 'green';
+					});
+			});
+          },
+		error: function (error) {
+			console.log(error);
+		}
+        });
+	}
+	else
+	alert("Please click on submit first");
+});
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
