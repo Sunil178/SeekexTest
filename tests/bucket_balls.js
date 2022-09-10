@@ -26,11 +26,11 @@ function remove(array, element) {
 }
 
 function getExcludeBalls(all_balls, include_balls) {
-    res_balls = all_balls
-    for (let all_ball in all_balls) {
-        if (include_balls.includes(all_ball)) {
-			remove(include_balls, all_ball);
-			remove(res_balls, all_ball);
+    res_balls = structuredClone(all_balls)
+    for (let x in all_balls) {
+        if (include_balls.includes(all_balls[x])) {
+			remove(include_balls, all_balls[x]);
+			remove(res_balls, all_balls[x]);
 		}
 	}
     return res_balls
@@ -42,17 +42,17 @@ function max(a,b) {
 
 function knapSack(W, val)
 {
-    wt = val
+    wt = structuredClone(val)
     n = val.length
-    let i, w;
+    let i, j, w;
     let response = [];
     let K = new Array(n + 1);
-    for( i=0;i<K.length;i++)
+    for(i = 0; i < K.length; i++)
     {
-        K[i]=new Array(W+1);
-        for(let j=0;j<W+1;j++)
+        K[i] = new Array(W+1);
+        for(j = 0; j < W + 1; j++)
         {
-            K[i][j]=0;
+            K[i][j] = 0;
         }
     }
     for (i = 0; i <= n; i++) {
@@ -69,12 +69,14 @@ function knapSack(W, val)
     }
     let res = K[n][W];
     w = W;
-    for (i = n; i > 0 && res > 0; i--)
+    for (i = n; i > 0; i--)
     {
+        if (res <= 0)
+            break;
         if (res == K[i - 1][w])
             continue;
         else {
-            response.push(wt[i - 1] + " ");
+            response.push(wt[i - 1]);
             res = res - val[i - 1];
             w = w - wt[i - 1];
         }
@@ -83,14 +85,14 @@ function knapSack(W, val)
 }
 
 function getLossAndBuckets(p_buckets) {
-    temp_balls = balls
-    empty_spaces = 0
-    for (let p_bucket in p_buckets) {
+    let temp_balls = structuredClone(balls);
+    var empty_spaces = 0;
+    for (let x in p_buckets) {
         if (temp_balls.length > 0) {
-            response = knapSack(p_bucket, temp_balls)
+            response = knapSack(p_buckets[x], temp_balls);
 			bucket_utilization = response.reduce((pv, cv) => pv + cv, 0);
-            empty_spaces += (p_bucket - bucket_utilization)
-            temp_balls = getExcludeBalls(temp_balls, response)
+            empty_spaces += (p_buckets[x] - bucket_utilization);
+            temp_balls = getExcludeBalls(temp_balls, response);
 		}
 	}
     return empty_spaces
@@ -110,6 +112,7 @@ while (i <= Object.values(buckets).length) {
 		sum_combination = combinations[x].reduce((pv, cv) => pv + cv, 0);
         if (sum_combination >= total_ball_volumes) {
 			let loss = getLossAndBuckets(combinations[x])
+            console.log("Main", combinations[x], loss)
             if (loss <= minimum_loss_combinations['loss']) {
                 if (loss == minimum_loss_combinations['loss'] && min_boxused_count < combinations[x].length)
                     continue

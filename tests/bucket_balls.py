@@ -43,7 +43,6 @@ def knapSack(W, val):
             else:
                 K[i][w] = K[i - 1][w]
     res = K[n][W]
-    # print(res)
     w = W
     for i in range(n, 0, -1):
         if res <= 0:
@@ -63,21 +62,20 @@ def getLossAndBuckets(p_buckets):
     for p_bucket in p_buckets:
         if len(temp_balls) > 0:
             response = knapSack(p_bucket, temp_balls)
-            # print("knapSack:", response)
             bucket_utilization = sum(response)
             empty_spaces += (p_bucket - bucket_utilization)
             temp_balls = getExcludeBalls(temp_balls, response)
     return empty_spaces
 
-# buckets = {
-# 	"A": 6,
-# 	"B": 5,
-# 	"C": 3,
-# 	"D": 4,
-# 	"E": 7
-# }
-
 """
+buckets = {
+	"A": 6,
+	"B": 5,
+	"C": 3,
+	"D": 4,
+	"E": 7
+}
+
 balls = {
 	"PINK": {'value': 2.5, 'quantity': 0},
 	"RED": {'value': 2, 'quantity': 0},
@@ -108,6 +106,7 @@ while i <= len(buckets):
     for combination in combinations:
         if sum(combination) >= total_ball_volumes:
             loss = getLossAndBuckets(combination)
+            print("Main", combination, loss)
             if loss <= minimum_loss_combinations['loss']:
                 if loss == minimum_loss_combinations['loss'] and min_boxused_count < len(combination):
                     continue

@@ -1,4 +1,4 @@
-from bucket_ballls import iterr_combinations
+from bucket_balls import iterr_combinations
 
 def getExtraBalls(all_balls, bucket_weight):
     total_balls_size = sum(all_balls)
